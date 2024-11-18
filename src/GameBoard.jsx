@@ -1,10 +1,21 @@
 /* eslint-disable react/prop-types */
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import gameData from "./GameData"
 
 const GameBoard = ({ setScore, score, bestScore, setBestScore }) => {
 
     const [clickedKeys, setClickedKeys] = useState([])
+    const [shuffleData, setShuffleData] = useState(gameData)
+
+
+    function shuffleArray(array){
+        return array.map((item) => ({...item, sort: Math.random()})).sort((a, b) => a.sort - b.sort).map(({ ...item}) => item)
+    }
+
+    // run the shuffleArray func whenever the score changes
+    useEffect(() => {
+        setShuffleData(shuffleArray(gameData))
+    }, [score])
 
     function calScore(id) {
         if (clickedKeys.includes(id)) {
@@ -33,7 +44,7 @@ const GameBoard = ({ setScore, score, bestScore, setBestScore }) => {
 
     return (
         <section className="gameboard">
-            {gameData.map(({ id, img, name }) => (
+            {shuffleData.map(({ id, img, name }) => (
                 <div className="game" key={id} onClick={() => calScore(id)}>
                     <img src={img} alt="" />
                     <p>{name}</p>
