@@ -8,7 +8,7 @@ const GameBoard = ({ setScore, score, bestScore, setBestScore }) => {
 
     function calScore(id) {
         if (clickedKeys.includes(id)) {
-
+            calBestScore(bestScore)
             // Reset the current score
             setScore(0)
         } else {
@@ -18,6 +18,18 @@ const GameBoard = ({ setScore, score, bestScore, setBestScore }) => {
             setScore(score + 1)
         }
     }
+
+    function calBestScore(bestscore) {
+        // Update best score if current score is greater
+        if (score > bestscore) {
+            bestscore = score
+            setBestScore(bestscore)
+        }
+
+        // Reset clicked items
+        setClickedKeys([])
+    }
+
 
     return (
         <section className="gameboard">
